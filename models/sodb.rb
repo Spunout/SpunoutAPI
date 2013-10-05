@@ -3,6 +3,9 @@ module SpunoutAPI
   class SoDB
     
     def initialize
+
+      @from_string = 'FROM exp_channel_titles LEFT JOIN exp_channel_data on exp_channel_titles.entry_id = exp_channel_data.entry_id '
+      
       @select_string = "SELECT exp_channel_titles.title, 
             exp_channel_titles.entry_id, 
             exp_channel_titles.url_title,
@@ -22,9 +25,10 @@ module SpunoutAPI
             exp_channel_data.field_id_36, 
             exp_channel_data.field_id_37, 
             exp_channel_data.field_id_85
-      FROM exp_channel_titles
-      LEFT JOIN exp_channel_data on exp_channel_titles.entry_id = exp_channel_data.entry_id "
+            #{@from_string} "
   
+      @category_query = 'SELECT DISTINCT exp_channel_data.field_id_37 FROM exp_channel_data '
+
       @client = Mysql2::Client.new(:host => "127.0.0.1", :username => "root", :database => "spunout", :password => "root")  
     
     end
@@ -55,6 +59,18 @@ module SpunoutAPI
                       or exp_channel_data.field_id_37 LIKE '%"+term+"%'
                   )
                   AND exp_channel_titles.channel_id = 5 ")
+    end
+
+    def categories()
+      response = @client.query(@category_query)
+
+      response = response.map do |row| 
+        row['field_id_37'].split(/\W/).map do |word| 
+          word.downcase.to_sym 
+        end 
+      end
+      response.flatten!
+      response.uniq
     end
     
     def query(where)
