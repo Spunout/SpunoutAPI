@@ -28,46 +28,46 @@ module SpunoutAPI
       { error: [ { message: "This method does not exists", code: 404 } ] }.to_json
     end
     
-    get '/v1' do
+    get '/v1/?' do
       content_type :json
       page = params["page"].to_i
       result = sodb.page(page)
       { total: 2083, page: page, count: result.count, total_pages: 42, services: result}.to_json
     end
     
-    get '/v1/service/:id' do
+    get '/v1/service/:id/?' do
       content_type :json
       result = sodb.find_by_id(params[:id])
       { services: result }.to_json
     end
     
-    get '/v1/search/:term' do
+    get '/v1/search/:term/?' do
       content_type :json
       fz = FuzzyMatch.new(sodb.query(""))
       result = fz.find_all(params[:term])
       { count: result.count, services: result }.to_json
     end
 
-    get '/v1/search/by_category/:term' do
+    get '/v1/search/by_category/:term/?' do
       content_type :json
       result = sodb.find_by_category(params[:term])
       { count: result.count, services: result }.to_json
     end
 
-    get '/v1/categories' do
+    get '/v1/categories/?' do
       content_type :json
       result = sodb.categories
       { count: result.count, categories: result }.to_json
     end
 
-    get '/v1/categories/search/:term' do
+    get '/v1/categories/search/:term/?' do
       content_type :json
       fz = FuzzyMatch.new(sodb.categories)
       result = fz.find_all(params[:term])
       { count: result.count, categories: result}.to_json
     end
 
-    get '/v1/nearme' do 
+    get '/v1/nearme/?' do 
       content_type :json
       
       unless params.has_key? "latitude" and params.has_key? "longitude"
