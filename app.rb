@@ -1,6 +1,7 @@
 require 'bundler'
 Bundler.require
 require_relative 'models/sodb.rb'
+require_relative 'find.rb'
 
 module SpunoutAPI
 
@@ -32,7 +33,8 @@ module SpunoutAPI
     
     get '/v1/search/:term' do
       content_type :json
-      result = sodb.find(params[:term])
+      fz = FuzzyMatch.new(sodb.query(""))
+      result = fz.find_all(params[:term])
       { services: result}.to_json
     end
 
@@ -40,6 +42,13 @@ module SpunoutAPI
       content_type :json
       result = sodb.categories
       { count: result.count, categories: result }.to_json
+    end
+
+    get '/v1/categories/search/:term' do
+      content_type :json
+      fz = FuzzyMatch.new(sodb.categories)
+      result = fz.find_all(params[:term])
+      { count: result.count, categories: result}.to_json
     end
   end
 end
