@@ -1,7 +1,6 @@
 require 'bundler'
 Bundler.require
 require_relative 'models/sodb.rb'
-require_relative 'find.rb'
 
 module SpunoutAPI
 
