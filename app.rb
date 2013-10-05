@@ -48,6 +48,12 @@ module SpunoutAPI
       { count: result.count, services: result }.to_json
     end
 
+    get '/v1/search/by_category/:term' do
+      content_type :json
+      result = sodb.find_by_category(params[:term])
+      { count: result.count, services: result }.to_json
+    end
+
     get '/v1/categories' do
       content_type :json
       result = sodb.categories
