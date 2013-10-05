@@ -49,18 +49,6 @@ module SpunoutAPI
       self.query("WHERE exp_channel_titles.entry_id = "+id)
     end
     
-    def find(term)
-      self.query("WHERE
-                  (
-                      exp_channel_titles.title LIKE '%"+term+"%'
-                      or exp_channel_data.field_id_23 LIKE '%"+term+"%'
-                      or exp_channel_data.field_id_26 LIKE '%"+term+"%'
-                      or exp_channel_data.field_id_28 LIKE '%"+term+"%'
-                      or exp_channel_data.field_id_37 LIKE '%"+term+"%'
-                  )
-                  AND exp_channel_titles.channel_id = 5 ")
-    end
-
     def categories()
       response = @client.query(@category_query)
 
