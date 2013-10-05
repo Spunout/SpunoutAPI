@@ -46,7 +46,12 @@ module SpunoutAPI
     end
     
     def find_by_id(id)
-      self.query("WHERE exp_channel_titles.entry_id = "+id)
+      self.query("WHERE exp_channel_titles.entry_id = '#{id}'")
+    end
+
+    def find_by_category(term)
+      term.downcase!
+      self.query("WHERE LOWER(exp_channel_data.field_id_37) LIKE '%#{term}%'")
     end
     
     def categories()
