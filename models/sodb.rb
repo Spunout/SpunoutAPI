@@ -40,18 +40,18 @@ module SpunoutAPI
       if(page == 0) 
         self.query("LIMIT 50 OFFSET 0")
       else 
-        self.query("LIMIT 50 OFFSET "+(page * 50).to_s)
+        self.query("LIMIT 50 OFFSET "+@client.escape((page * 50).to_s))
       end
       
     end
     
     def find_by_id(id)
-      self.query("WHERE exp_channel_titles.entry_id = '#{id}'")
+      self.query("WHERE exp_channel_titles.entry_id = '#{@client.escape(id)}'")
     end
 
     def find_by_category(term)
       term.downcase!
-      self.query("WHERE LOWER(exp_channel_data.field_id_37) LIKE '%#{term}%'")
+      self.query("WHERE LOWER(exp_channel_data.field_id_37) LIKE '%#{@client.escape(term)}%'")
     end
     
     def categories()
