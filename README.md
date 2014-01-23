@@ -1,13 +1,230 @@
-==Spunout API
+#SpunOut API
+This is the API for [SpunOut](http://spunout.ie) providing access to information of their listed services. 
+
+There are still known bugs and optimizations that can be made and fixed (and hopefully by you!). 
+***
+##Methods
+
+###GET /v1/service/:id/
+
+Fetches infornmation about a service with the given id. 
+
+Example: http://api.spunout.ie/v1/service/3252
+
+```
+{
+    "services": [
+        {
+            "id": 3252,
+            "title": "Fit 4 Work",
+            "info": null,
+            "page": "http://spunout.ie/help/service/fit-4-work",
+            "address": {
+                "lines": [
+                    null,
+                    null
+                ],
+                "city": null,
+                "postcode": null,
+                "county": null,
+                "country": null,
+                "latitude": null,
+                "longitude": null
+            },
+            "website": null,
+            "email": null,
+            "phone": null,
+            "hotline": null,
+            "hours": null,
+            "keywords": null,
+            "image": null
+        }
+    ]
+}
+```
+
+###GET /v1/search/:term
+Fuzzy searches all services for term.
+
+Example: http://api.spunout.ie/v1/search/bullying
+
+```
+{
+    "count": 2133,
+    "services": [
+        {
+            "id": 1995,
+            "title": "Bullying",
+            "info": null,
+            "page": "http://spunout.ie/help/service/bullying",
+            "address": {
+                "lines": [
+                    null,
+                    null
+                ],
+                "city": null,
+                "postcode": null,
+                "county": null,
+                "country": null,
+                "latitude": null,
+                "longitude": null
+            },
+            "website": null,
+            "email": null,
+            "phone": null,
+            "hotline": null,
+            "hours": null,
+            "keywords": null,
+            "image": null
+        },
+        .......
+        
+```
+
+###GET /v1/search/by_category/:category
+Return services with given category name (found from /v1/categories)
+
+Example: http://api.spunout.ie/v1/search/by_category/teen
+
+```
+{
+    "count": 7,
+    "services": [
+        {
+            "id": 1274,
+            "title": "Teen-Line Ireland",
+            "info": "TeenLine Ireland is a national helpline for teenagers. TeenLine provides a listening and support service available at 1800-833-634",
+            "page": "http://spunout.ie/help/service/teen-line-ireland",
+            "address": {
+                "lines": [
+                    null,
+                    null
+                ],
+                "city": null,
+                "postcode": null,
+                "county": null,
+                "country": null,
+                "latitude": null,
+                "longitude": null
+            },
+            "website": "www.teenline.ie",
+            "email": null,
+            "phone": "1800 833 634",
+            "hotline": null,
+            "hours": "Line open 7.00pm to 10.00pm -  7 days.",
+            "keywords": "mental health teenline suicide youth self-harm self harm depression teen-line selfharm panic attacks loneliness bullying",
+            "image": null
+        },
+        .......
+        
+```
+
+###GET /v1/categories
+Returns all categories
+
+Example: http://api.spunout.ie/v1/categories
+
+```
+{
+    "count": 772,
+    "categories": [
+        "mental",
+        "health",
+        "teenline",
+        "suicide",
+        "youth",
+        "self",
+        "harm",
+        "depression",
+        "teen",
+        "line",
+        "selfharm",
+        "panic",
+        "attacks",
+        "loneliness",
+        "bullying",
+        "bereavement",
+        "counselling",
+        "stress",
+        "anxiety",
+        "prevention",
+        .....
+        
+```
+
+###GET /v1/categories/search/:term
+Fuzzy searches category names for given term
+
+Example: http://api.spunout.ie/v1/categories/search/teen
+
+```
+{
+    "count": 154,
+    "categories": [
+        "teen",
+        "teens",
+        "teenline",
+        "teenager",
+        "green",
+        "teenagers",
+        "beaten",
+        "esteem",
+        "men",
+        "screening",
+        "volunteer",
+        "antenatal",
+        "peer",
+        .....
+        
+```
+
+###GET /v1/nearme
+
+Requires 2 parameters:
++ latitude
++ longitude
+
+returns services near to the provide latitude and longitude
+
+Example: http://api.spunout.ie/v1/latitude=51.899419&longitude=-8.470931
+
+```
+{
+    "count": 42,
+    "services": [
+        {
+            "id": 1432,
+            "title": "St Vincent de Paul - Cork Region",
+            "info": "Cork Region SVP is the biggest charitable organisation helping those in need in Cork and has been present in the region since 1846. Throughout the City and County 94 local Conference units and over 800 members, composed of volunteers based in local parishes, work on various projects includingÐ Home visitation, providing financial and practical help; assisting with educational support; caring for the homeless in Cork, through two hostels; hospital and prison visitation.",
+            "page": "http://spunout.ie/help/service/st-vincent-de-paul-cork-region",
+            "address": {
+                "lines": [
+                    "Ozanam House",
+                    "2, Tuckey Street"
+                ],
+                "city": null,
+                "postcode": null,
+                "county": "Cork",
+                "country": "Ireland",
+                "latitude": "51.896993",
+                "longitude": "-8.475266"
+            },
+            "website": "www.svp.ie",
+            "email": "info@svpcork.ie",
+            "phone": "021 4270444",
+            "hotline": null,
+            "hours": "Monday to Friday 9.00am - 1.00pm and 2.00pm - 5.00pm; Wednesdays office opens at 10.00am",
+            "keywords": "activism poverty assistance  charity",
+            "image": null
+        },
+        .....
+        
+```
 
 
-Routes
+***
 
-+ /
-+ /search/:query
-+ /service/:id
-
-Notes on DB
+##Notes on DB
 
 + Service channel/group ID is 5
 + Titles of services are stored in exp_channel_titles (channel_id = 5)
@@ -16,7 +233,7 @@ Notes on DB
 
 The current field titles for each service data is:
 
-+ 21	heading
++ 21    heading
 + 23	info
 + 24	address_1
 + 25	address_2
@@ -72,3 +289,4 @@ The current field titles for each service data is:
 + 293	phone_1_description
 + 294	phone_2_description
 + 314	is_live
+    
